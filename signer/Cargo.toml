@@ -34,7 +34,7 @@ web = ["getrandom/js"]
 
 [dependencies]
 regex = { workspace = true }
-subxt = { workspace = true, optional = true }
+subxt = { workspace = true, optional = true, features = ["native"] }
 hex = { workspace = true }
 codec = { package = "parity-scale-codec", workspace = true, features = ["derive"] }
 sp-core-hashing = { workspace = true }
