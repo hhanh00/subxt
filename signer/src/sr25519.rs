@@ -6,10 +6,7 @@
 
 use crate::crypto::{seed_from_entropy, DeriveJunction, SecretUri};
 use hex::FromHex;
-use schnorrkel::{
-    derive::{ChainCode, Derivation},
-    ExpansionMode, MiniSecretKey,
-};
+use schnorrkel::{derive::{ChainCode, Derivation}, ExpansionMode, MiniSecretKey, SecretKey};
 use secrecy::ExposeSecret;
 
 const SEED_LENGTH: usize = schnorrkel::keys::MINI_SECRET_KEY_LENGTH;
@@ -116,6 +113,14 @@ impl Keypair {
             .expand_to_keypair(ExpansionMode::Ed25519);
 
         Ok(Keypair(keypair))
+    }
+
+    /// Turn a 64 byte secret key into a keypair
+    ///
+    pub fn from_bytes(key: [u8; 64]) -> Result<Self, Error> {
+        let sk = SecretKey::from_bytes(&key).map_err(|_| Error::InvalidSeed)?;
+        let kp = schnorrkel::Keypair::from(sk);
+        Ok(Keypair(kp))
     }
 
     /// Derive a child key from this one given a series of junctions.
