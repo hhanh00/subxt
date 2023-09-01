@@ -162,6 +162,12 @@ impl Keypair {
     }
 }
 
+impl From<schnorrkel::Keypair> for Keypair {
+    fn from(value: schnorrkel::Keypair) -> Self {
+        Keypair(value)
+    }
+}
+
 /// Verify that some signature for a message was created by the owner of the [`PublicKey`].
 ///
 /// ```rust
